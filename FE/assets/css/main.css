@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.page-enter-active {
+  transition: all 0.3s ease;
+}
+
+.page-leave-active {
+  transition: all 0.3s ease;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(-90px);
+}
+
+.page-leave-to {
+  transform: translateX(90px);
+  opacity: 0;
+}
+
+
+body {
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+h1,
+h2,
+.heading-font {
+
+  font-family: 'Bebas Neue', serif;
+  font-weight: 400;
+}
+
+.descriptions,
+h3,
+h4,
+h5 {
+  font-family: "Saira", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+strong {
+  font-weight: 700;
+}

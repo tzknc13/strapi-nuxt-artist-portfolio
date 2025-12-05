@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_textlists_text_lists",
+  "info": {
+    "icon": "align-center",
+    "description": "",
+    "displayName": "text_list"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "component",
+      "repeatable": true,
+      "component": "textlists.press"
+    },
+    "header": {
+      "type": "string"
+    }
+  }
+}

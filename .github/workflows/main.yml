@@ -1,0 +1,66 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - deploy-main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: Echo Node.js version
+        run: node --version
+
+      - name: Check username presence
+        run: |
+          if [ -z "${{ secrets.SSH_USERNAME }}" ]; then
+            echo "SSH_USERNAME is not set!"
+            exit 1
+          else
+            echo "SSH_USERNAME is set."
+          fi
+      
+      - name: Check password presence
+        run: |
+          if [ -z "${{ secrets.SSH_PASSWORD }}" ]; then
+            echo "SSH_PASSWORD is not set!"
+            exit 1
+          else
+            echo "SSH_PASSWORD is set."
+          fi
+
+      - name: Ensure dist exists and create marker
+        run: |
+          touch last-deploy.txt
+          echo deployed at $(date -u) >> last-deploy.txt
+
+      - name: Change directory to FE
+        run: cd FE
+
+      - name: Install dependencies
+        run: yarn
+      
+      - name: Build the project
+        run: yarn build
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "dist/*, ecosystem.config.js, last-deploy.txt"
+          target: "/home/jan/martinec-astro/"
+

@@ -1,0 +1,34 @@
+{
+  "kind": "singleType",
+  "collectionName": "first_pages",
+  "info": {
+    "singularName": "first-page",
+    "pluralName": "first-pages",
+    "displayName": "First-page",
+    "name": "first-page"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "text_one": {
+      "type": "string"
+    },
+    "text_two": {
+      "type": "string"
+    },
+    "single_image": {
+      "type": "media",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "multiple": false,
+      "required": false
+    }
+  }
+}

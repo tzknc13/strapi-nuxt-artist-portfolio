@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdominik_be=self.webpackChunkdominik_be||[]).push([[3392],{63392:(i,d,n)=>{n.r(d),n.d(d,{default:()=>e});const e={"plugin.description.long":"Adds GraphQL endpoint with default API methods.","plugin.description.short":"Adds GraphQL endpoint with default API methods.","plugin.name":"GraphQL"}}}]);

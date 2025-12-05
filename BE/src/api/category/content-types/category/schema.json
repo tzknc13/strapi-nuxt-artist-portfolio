@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categories",
+  "info": {
+    "singularName": "category",
+    "pluralName": "categories",
+    "displayName": "Category",
+    "name": "category"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "category_name": {
+      "type": "string",
+      "required": true
+    },
+    "works": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::work.work",
+      "inversedBy": "categories"
+    },
+    "single_image": {
+      "type": "media",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "multiple": false,
+      "required": false
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "category_name",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "default": "// toto je volitelne"
+    },
+    "year": {
+      "type": "biginteger",
+      "required": true
+    },
+    "position_in_view": {
+      "type": "integer",
+      "default": 0,
+      "unique": false,
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "works",
+  "info": {
+    "singularName": "work",
+    "pluralName": "works",
+    "displayName": "Work",
+    "name": "work"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "single_image": {
+      "type": "media",
+      "allowedTypes": [
+        "files",
+        "images",
+        "videos"
+      ],
+      "multiple": false,
+      "required": true
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "works"
+    },
+    "images": {
+      "type": "media",
+      "allowedTypes": [
+        "files",
+        "images",
+        "videos"
+      ],
+      "multiple": true,
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "required": true,
+      "targetField": "title"
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "description_1": {
+      "type": "richtext"
+    },
+    "description_2": {
+      "type": "richtext"
+    },
+    "medium": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "coauthor": {
+      "type": "string"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "dimensions": {
+      "type": "string"
+    },
+    "position_in_view": {
+      "type": "integer"
+    }
+  }
+}
