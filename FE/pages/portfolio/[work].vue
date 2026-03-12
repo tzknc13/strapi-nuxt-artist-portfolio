@@ -54,17 +54,13 @@ const images = computed(() => workdata.value && workdata.value[0] ? workdata.val
 const arrowRight = computed(() => workdata.value && imagePos.value < work.value.images.length - 1)
 const arrowLeft = computed(() => workdata.value && imagePos.value > 0)
 
-// Head meta
-useHead(() => ({
-  title: work.value.title ? `${work.value.title} | ${store.state.artistName}` : 'Work',
-  meta: [
-    {
-      hid: work.value.title || 'work',
-      name: work.value.title || 'work',
-      content: work.value.seo_description || '',
-    },
-  ],
-}))
+// SEO meta tags
+useSeo({
+  title: work.value?.title || 'Work',
+  description: work.value?.seo_description || `Artwork: ${work.value?.title}`,
+  image: images.value?.[0]?.attributes?.url,
+  type: 'article',
+})
 
 // Methods
 const closeView = () => {

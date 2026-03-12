@@ -1,16 +1,27 @@
 import { createStore } from 'vuex'
 import formatsCheck from '../helpers/formats.js'
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(async (nuxtApp) => {
+  const config = useRuntimeConfig()
+  
+  // Fetch initial site data
+  let siteData = null
+  try {
+    const response = await $fetch(`${config.public.apiUrl}/first-page?populate=*`)
+    siteData = response?.data?.attributes
+  } catch (error) {
+    console.warn('Failed to fetch site data:', error)
+  }
+
   const store = createStore({
     state: () => ({
-      artistName: "Artist N.1",
+      artistName: siteData?.artist_name || "Artist Name",
       fullscreenImgUrl: "",
       isWorksLoaded: false,
       isCatsLoaded: false,
       works: [],
       categories: [],
-      homepageData: {}
+      homepageData: siteData || {}
     }),
     
     getters: {

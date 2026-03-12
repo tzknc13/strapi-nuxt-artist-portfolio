@@ -476,60 +476,22 @@ export interface ApiCvCv extends Schema.SingleType {
   };
 }
 
-export interface ApiEssaysTextEssaysText extends Schema.CollectionType {
-  collectionName: 'essays_texts';
-  info: {
-    displayName: 'Essays-text';
-    name: 'essays-text';
-    pluralName: 'essays-texts';
-    singularName: 'essays-text';
-  };
-  options: {
-    draftAndPublish: true;
-    increments: true;
-    timestamps: true;
-  };
-  attributes: {
-    content: Attribute.RichText & Attribute.Required;
-    createdAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::essays-text.essays-text',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    date_written: Attribute.Date & Attribute.Required;
-    position_in_view: Attribute.Integer;
-    publishedAt: Attribute.DateTime;
-    short_text: Attribute.Text;
-    single_image: Attribute.Media<'images' | 'files' | 'videos'>;
-    slug: Attribute.UID<'api::essays-text.essays-text', 'title'> &
-      Attribute.Required;
-    title: Attribute.String & Attribute.Required;
-    updatedAt: Attribute.DateTime;
-    updatedBy: Attribute.Relation<
-      'api::essays-text.essays-text',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiFirstPageFirstPage extends Schema.SingleType {
   collectionName: 'first_pages';
   info: {
+    description: '';
     displayName: 'First-page';
     name: 'first-page';
     pluralName: 'first-pages';
     singularName: 'first-page';
   };
   options: {
-    draftAndPublish: true;
-    increments: true;
-    timestamps: true;
+    draftAndPublish: false;
   };
   attributes: {
+    artist_name: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'Artist Name'>;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::first-page.first-page',
@@ -537,92 +499,14 @@ export interface ApiFirstPageFirstPage extends Schema.SingleType {
       'admin::user'
     > &
       Attribute.Private;
-    publishedAt: Attribute.DateTime;
+    seo_description: Attribute.Text;
     single_image: Attribute.Media<'images' | 'files' | 'videos'>;
     text_one: Attribute.String;
     text_two: Attribute.String;
-    updatedAt: Attribute.DateTime;
-    updatedBy: Attribute.Relation<
-      'api::first-page.first-page',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiGeneralGeneral extends Schema.SingleType {
-  collectionName: 'generals';
-  info: {
-    displayName: 'General';
-    name: 'general';
-    pluralName: 'generals';
-    singularName: 'general';
-  };
-  options: {
-    draftAndPublish: true;
-    increments: true;
-    timestamps: true;
-  };
-  attributes: {
-    copyright: Attribute.String;
-    createdAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::general.general',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    disclaimer: Attribute.String;
-    publishedAt: Attribute.DateTime;
-    site_name: Attribute.String;
-    site_subtitle: Attribute.String;
-    updatedAt: Attribute.DateTime;
-    updatedBy: Attribute.Relation<
-      'api::general.general',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    var1: Attribute.String;
-    var2: Attribute.String;
-    var3: Attribute.String;
-  };
-}
-
-export interface ApiReadersDiaryReadersDiary extends Schema.CollectionType {
-  collectionName: 'readers_diaries';
-  info: {
-    displayName: 'Readers-diary';
-    name: 'readers-diary';
-    pluralName: 'readers-diaries';
-    singularName: 'readers-diary';
-  };
-  options: {
-    draftAndPublish: true;
-    increments: true;
-    timestamps: true;
-  };
-  attributes: {
-    book_author: Attribute.String;
-    content: Attribute.RichText;
-    createdAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::readers-diary.readers-diary',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    date_written: Attribute.Date & Attribute.Required;
-    position_in_view: Attribute.Integer;
-    publishedAt: Attribute.DateTime;
-    short_text: Attribute.Text;
-    slug: Attribute.UID<'api::readers-diary.readers-diary', 'title'> &
-      Attribute.Required;
     title: Attribute.String;
     updatedAt: Attribute.DateTime;
     updatedBy: Attribute.Relation<
-      'api::readers-diary.readers-diary',
+      'api::first-page.first-page',
       'oneToOne',
       'admin::user'
     > &
@@ -1066,10 +950,7 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::contact.contact': ApiContactContact;
       'api::cv.cv': ApiCvCv;
-      'api::essays-text.essays-text': ApiEssaysTextEssaysText;
       'api::first-page.first-page': ApiFirstPageFirstPage;
-      'api::general.general': ApiGeneralGeneral;
-      'api::readers-diary.readers-diary': ApiReadersDiaryReadersDiary;
       'api::work.work': ApiWorkWork;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

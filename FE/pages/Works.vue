@@ -38,20 +38,10 @@ const metaDescription = computed(() => {
     : `All works by ${artistName}`
 })
 
-// Head management
-useHead({
-  title: computed(() => {
-    const categoryName = getCurrentCategory.value?.category_name || 'Works'
-    const artistName = store.state.artistName
-    return `${categoryName} | ${artistName}`
-  }),
-  meta: computed(() => [
-    { 
-      hid: getCurrentCategory.value?.category_name || 'All works', 
-      name: 'description', 
-      content: metaDescription.value 
-    }
-  ])
+// SEO meta tags
+useSeo({
+  title: getCurrentCategory.value?.category_name || 'Works',
+  description: metaDescription.value,
 })
 
 // Fetch data on mount

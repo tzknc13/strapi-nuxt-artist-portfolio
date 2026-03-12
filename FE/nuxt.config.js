@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.API_URL || 'http://localhost:1337/api',
       baseUrl: process.env.BASE_URL || 'http://localhost:1337',
+      siteUrl: process.env.SITE_URL || 'http://localhost:3000',
     }
   },
 

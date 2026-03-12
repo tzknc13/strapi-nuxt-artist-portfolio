@@ -1,7 +1,10 @@
 <template>
   <div class="mx-auto flex bg-no-repeat bg-left-top">
     <transition name="slide-fade">
-      <h2 v-if="isShow" class="m-5 text-6xl self-center">{{ pageData?.text_one || '' }}</h2>
+      <div>
+        <h2 v-if="isShow" class="m-5 text-6xl self-center">{{ pageData?.text_one || '' }}</h2>
+        <h2 v-if="isShow && pageData?.text_two" class="m-5 text-2xl self-center">{{ pageData?.text_two || '' }}</h2>
+      </div>
     </transition>
   </div>
 </template>
@@ -14,27 +17,32 @@ const config = useRuntimeConfig()
 const store = useStore()
 
 const { data: pageDataResponse } = await useFetch(`${config.public.apiUrl}/first-page?populate=*`, {
-  transform: (res) => res.data.attributes
+  transform: (res) => res.data.attributes,
+  server: false,
 })
-
 
 // Reactive state
 const isShow = ref(false)
 const pageData = computed(() => pageDataResponse.value)
 
 // Set homepage data in store
-watch(pageData, (newValue) => {
-  if (newValue) {
-    store.commit('setHomepageData', newValue)
-  }
-}, { immediate: true })
+watch(
+  pageData,
+  (newValue) => {
+    if (newValue) {
+      store.commit('setHomepageData', newValue)
+    }
+  },
+  { immediate: true },
+)
 
-// Head meta
-useHead({
-  title: `Homepage | ${store.state.artistName}`,
-  meta: [
-    { hid: 'homepage', name: 'description', content: 'Meta description' },
-  ],
+// SEO meta tags
+watchEffect(() => {
+  useSeo({
+    title: pageData.value?.title || 'Home',
+    description: pageData.value?.seo_description || 'Welcome to the artist portfolio',
+    image: pageData.value?.single_image?.data?.attributes?.url,
+  })
 })
 
 // Lifecycle - delay to ensure transition works
@@ -46,7 +54,7 @@ onMounted(() => {
 
 // Define layout
 definePageMeta({
-  layout: 'home'
+  layout: 'home',
 })
 </script>
 <style>

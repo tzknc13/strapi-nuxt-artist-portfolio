@@ -8,12 +8,6 @@
           </h1>
         </li>
         <li class="">
-          <nuxt-link to="/essays" class="text-gray-500 hover:text-gray-400 font-light">texts </nuxt-link>
-        </li>
-        <li class="">
-          <nuxt-link to="/readersdiary" class="text-gray-500 hover:text-gray-400 font-light">readers diary</nuxt-link>
-        </li>
-        <li class="">
           <nuxt-link to="/works" class="text-gray-500 hover:text-gray-400 font-light">works</nuxt-link>
         </li>
         <li class="">

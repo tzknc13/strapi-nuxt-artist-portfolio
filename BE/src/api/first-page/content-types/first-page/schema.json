@@ -5,12 +5,11 @@
     "singularName": "first-page",
     "pluralName": "first-pages",
     "displayName": "First-page",
-    "name": "first-page"
+    "name": "first-page",
+    "description": ""
   },
   "options": {
-    "increments": true,
-    "timestamps": true,
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -22,13 +21,24 @@
     },
     "single_image": {
       "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "multiple": false,
-      "required": false
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "seo_description": {
+      "type": "text"
+    },
+    "artist_name": {
+      "type": "string",
+      "required": true,
+      "default": "Artist Name"
     }
   }
 }
