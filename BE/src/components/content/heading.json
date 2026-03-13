@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_content_headings",
+  "info": {
+    "displayName": "Heading",
+    "icon": "heading",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "level": {
+      "type": "enumeration",
+      "enum": ["h1", "h2", "h3", "h4"],
+      "default": "h2"
+    }
+  }
+}

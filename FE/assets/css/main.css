@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    @apply bg-white text-gray-800;
+  }
+  html.dark {
+    @apply bg-gray-900 text-gray-100;
+  }
+}
+
 .page-enter-active {
   transition: all 0.3s ease;
 }
