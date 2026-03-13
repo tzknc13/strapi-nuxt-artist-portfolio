@@ -73,9 +73,6 @@ const isCategories = ref(false)
 const isShow = ref(false)
 const isLimitedHeight = ref(true)
 
-// Helper functions
-const unwrapAttributes = (item) => item?.attributes || item
-
 const sortByPosition = (items) => {
   return items.slice().sort((a, b) => {
     const aPos = a.position_in_view || 1
@@ -88,32 +85,28 @@ const getCategoryImageOrFallback = (cat) => {
   if (cat.single_image) {
     return cat.single_image
   }
-  if (cat.works?.data?.length > 0) {
-    return cat.works.data[0].single_image || ''
+  if (cat.works?.length > 0) {
+    return cat.works[0].single_image || ''
   }
   return ''
 }
 
 // Computed properties
-const sortedCategories = computed(() => {
-  const unwrapped = props.categories.map(unwrapAttributes)
-  return sortByPosition(unwrapped)
-})
+const sortedCategories = computed(() => sortByPosition(props.categories.slice()))
 
 const filteredWorks = computed(() => {
   if (!selectedCategory.value) return props.works
 
   const filtered = props.works.filter((work) => {
-    return work.attributes.categories.data.some((cat) => cat.attributes.slug === selectedCategory.value)
+    return work.categories?.some((cat) => cat.slug === selectedCategory.value)
   })
 
-  const unwrapped = filtered.map(unwrapAttributes)
-  return sortByPosition(unwrapped)
+  return sortByPosition(filtered)
 })
 
 const categoryDescription = computed(() => {
-  const cat = props.categories.find((c) => c.attributes.slug === selectedCategory.value)
-  return cat?.attributes.description || null
+  const cat = props.categories.find((c) => c.slug === selectedCategory.value)
+  return cat?.description || null
 })
 
 // Methods
@@ -123,14 +116,12 @@ const changeView = () => {
   router.push({ path: route.path, query: {} })
 }
 
-const getCategoryImage = (rawCat) => {
-  const cat = unwrapAttributes(rawCat)
+const getCategoryImage = (cat) => {
   const imageData = getCategoryImageOrFallback(cat)
   return imageData ? formatsCheck(null, imageData, 'medium') : ''
 }
 
-const getCategoryAlignment = (rawCat) => {
-  const cat = unwrapAttributes(rawCat)
+const getCategoryAlignment = (cat) => {
   return getCategoryImageOrFallback(cat)
 }
 
@@ -140,10 +131,9 @@ const selectCat = (cat) => {
   router.push({ path: route.path, query: { cat: cat.slug } })
 }
 
-const isHorizontal = (rawImg) => {
-  if (!rawImg) return false
-  const img = rawImg.data?.attributes || rawImg
-  return img ? img.height < img.width : false
+const isHorizontal = (img) => {
+  if (!img) return false
+  return img.height < img.width
 }
 
 const workLink = (work) => {

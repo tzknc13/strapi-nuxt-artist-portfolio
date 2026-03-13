@@ -17,7 +17,7 @@ const config = useRuntimeConfig()
 const store = useStore()
 
 const { data: pageDataResponse } = await useFetch(`${config.public.apiUrl}/first-page?populate=*`, {
-  transform: (res) => res.data.attributes,
+  transform: (res) => res.data,
   server: false,
 })
 
@@ -41,7 +41,7 @@ watchEffect(() => {
   useSeo({
     title: pageData.value?.title || 'Home',
     description: pageData.value?.seo_description || 'Welcome to the artist portfolio',
-    image: pageData.value?.single_image?.data?.attributes?.url,
+    image: pageData.value?.single_image?.url,
   })
 })
 

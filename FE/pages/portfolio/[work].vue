@@ -49,23 +49,23 @@ const imagePos = ref(0)
 const show = ref(false)
 
 // Computed properties
-const work = computed(() => workdata.value && workdata.value[0] ? workdata.value[0].attributes : {})
-const images = computed(() => workdata.value && workdata.value[0] ? workdata.value[0].attributes.images.data : [])
-const arrowRight = computed(() => workdata.value && imagePos.value < work.value.images.length - 1)
+const work = computed(() => workdata.value?.[0] ?? {})
+const images = computed(() => workdata.value?.[0]?.images ?? [])
+const arrowRight = computed(() => workdata.value && imagePos.value < images.value.length - 1)
 const arrowLeft = computed(() => workdata.value && imagePos.value > 0)
 
 // SEO meta tags
 useSeo({
   title: work.value?.title || 'Work',
   description: work.value?.seo_description || `Artwork: ${work.value?.title}`,
-  image: images.value?.[0]?.attributes?.url,
+  image: images.value?.[0]?.url,
   type: 'article',
 })
 
 // Methods
 const closeView = () => {
   const router = useRouter()
-  router.push({ path: '/works', query: { cat: work.value.categories.data[0].attributes.slug } })
+  router.push({ path: '/works', query: { cat: work.value.categories?.[0]?.slug } })
 }
 
 const moveForward = () => {

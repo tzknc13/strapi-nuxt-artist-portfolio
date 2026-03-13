@@ -20,7 +20,7 @@ const { data: response } = await useFetch(
 
 const pageData = computed(() => {
   if (!response.value?.[0]) return null
-  return response.value[0].attributes
+  return response.value[0]
 })
 
 const blockMap = {

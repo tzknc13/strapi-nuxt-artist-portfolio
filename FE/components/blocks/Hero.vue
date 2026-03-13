@@ -29,7 +29,7 @@ const marginMap = {
 const marginClass = computed(() => marginMap[props.block.margin] ?? marginMap.medium)
 
 const imageUrl = computed(() => {
-  if (!props.block.image?.data) return null
+  if (!props.block.image) return null
   return getImageUrl(null, props.block.image, 'large')
 })
 </script>

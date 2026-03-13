@@ -8,7 +8,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   let siteData = null
   try {
     const response = await $fetch(`${config.public.apiUrl}/first-page?populate=*`)
-    siteData = response?.data?.attributes
+    siteData = response?.data
   } catch (error) {
     console.warn('Failed to fetch site data:', error)
   }

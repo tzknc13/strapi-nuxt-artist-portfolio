@@ -21,14 +21,14 @@ const store = useStore()
 const show = ref(false)
 
 const { data: cvData } = await useFetch(`${config.public.apiUrl}/cv?populate=*`, {
-  transform: (res) => res.data.attributes,
+  transform: (res) => res.data,
 })
 
 // SEO meta tags
 useSeo({
   title: 'CV',
   description: 'Curriculum Vitae - exhibitions, education, and professional experience',
-  image: cvData.value?.portrait_photo?.data?.attributes?.url,
+  image: cvData.value?.portrait_photo?.url,
 })
 
 // mounted hook

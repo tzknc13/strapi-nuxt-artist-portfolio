@@ -75,7 +75,7 @@ const { isDark, toggle } = useColorMode()
 const title = computed(() => store.state.artistName || ' - - ')
 
 const { data: pagesData } = await useFetch(
-  `${config.public.apiUrl}/pages?fields[0]=title&fields[1]=slug&filters[publishedAt][$notNull]=true&pagination[pageSize]=100`,
+  `${config.public.apiUrl}/pages?fields[0]=title&fields[1]=slug&status=published&pagination[pageSize]=100`,
   { transform: (res) => res.data }
 )
 
@@ -84,9 +84,7 @@ const { data: worksCount } = await useFetch(
   { transform: (res) => res.meta?.pagination?.total ?? 0 }
 )
 
-const pages = computed(() =>
-  pagesData.value?.map((p) => p.attributes) ?? []
-)
+const pages = computed(() => pagesData.value ?? [])
 
 const hasWorks = computed(() => (worksCount.value ?? 0) > 0)
 </script>
