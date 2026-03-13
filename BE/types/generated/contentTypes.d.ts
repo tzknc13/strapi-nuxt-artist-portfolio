@@ -514,6 +514,34 @@ export interface ApiFirstPageFirstPage extends Schema.SingleType {
   };
 }
 
+export interface ApiPagePage extends Schema.CollectionType {
+  collectionName: 'pages';
+  info: {
+    description: 'Dynamic pages with flexible content blocks';
+    displayName: 'Page';
+    pluralName: 'pages';
+    singularName: 'page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Attribute.DynamicZone<
+      ['content.paragraph', 'content.image-block', 'content.heading']
+    >;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::page.page', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    publishedAt: Attribute.DateTime;
+    seo_description: Attribute.Text;
+    slug: Attribute.UID<'api::page.page', 'title'> & Attribute.Required;
+    title: Attribute.String & Attribute.Required;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<'api::page.page', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface ApiWorkWork extends Schema.CollectionType {
   collectionName: 'works';
   info: {
@@ -951,6 +979,7 @@ declare module '@strapi/types' {
       'api::contact.contact': ApiContactContact;
       'api::cv.cv': ApiCvCv;
       'api::first-page.first-page': ApiFirstPageFirstPage;
+      'api::page.page': ApiPagePage;
       'api::work.work': ApiWorkWork;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
