@@ -5,7 +5,7 @@
       <div class="mt-5 mb-4 col-span-4 mx-auto text-center">
         <h2 class="text-8xl">{{ error.statusCode }}</h2>
         <h2 class="text-1xl">{{ error.statusCode === 404 ? "what you looking for isn't here" : 'An error occurred' }}</h2>
-        <nuxt-link to="/" class="text-gray-500 underline mt-4 inline-block">Go back home</nuxt-link>
+        <nuxt-link to="/" class="text-gray-500 dark:text-gray-400 underline mt-4 inline-block">Go back home</nuxt-link>
       </div>
       <Footer class="mt-40 col-span-4 self-end" />
     </div>
