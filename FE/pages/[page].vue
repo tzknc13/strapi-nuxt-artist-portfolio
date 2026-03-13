@@ -27,6 +27,7 @@ const blockMap = {
   'content.paragraph': resolveComponent('BlocksParagraph'),
   'content.image-block': resolveComponent('BlocksImage'),
   'content.heading': resolveComponent('BlocksHeading'),
+  'content.hero': resolveComponent('BlocksHero'),
 }
 
 function blockComponent(type) {

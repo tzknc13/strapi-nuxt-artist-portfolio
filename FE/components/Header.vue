@@ -27,7 +27,7 @@
       >
         <nav>
           <ul class="flex flex-col items-center gap-6 heading-font text-lg">
-            <li>
+            <li v-if="hasWorks">
               <nuxt-link to="/works" class="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 font-light" @click="menuOpen = false">works</nuxt-link>
             </li>
             <li>
@@ -79,9 +79,16 @@ const { data: pagesData } = await useFetch(
   { transform: (res) => res.data }
 )
 
+const { data: worksCount } = await useFetch(
+  `${config.public.apiUrl}/works?pagination[pageSize]=1&pagination[withCount]=true&fields[0]=id`,
+  { transform: (res) => res.meta?.pagination?.total ?? 0 }
+)
+
 const pages = computed(() =>
   pagesData.value?.map((p) => p.attributes) ?? []
 )
+
+const hasWorks = computed(() => (worksCount.value ?? 0) > 0)
 </script>
 
 <style scoped>

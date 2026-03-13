@@ -29,7 +29,8 @@
       "components": [
         "content.paragraph",
         "content.image-block",
-        "content.heading"
+        "content.heading",
+        "content.hero"
       ]
     }
   }

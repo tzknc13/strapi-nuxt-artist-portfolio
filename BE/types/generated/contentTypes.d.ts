@@ -527,7 +527,13 @@ export interface ApiPagePage extends Schema.CollectionType {
   };
   attributes: {
     content: Attribute.DynamicZone<
-      ['content.paragraph', 'content.image-block', 'content.heading']
+      [
+        'content.paragraph',
+        'content.image-block',
+        'content.heading',
+        'content.hero',
+        'content.three-columns'
+      ]
     >;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::page.page', 'oneToOne', 'admin::user'> &
