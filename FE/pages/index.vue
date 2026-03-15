@@ -10,17 +10,11 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-
-const store = useStore()
-
-// Reactive state
+const { homepageData } = useSiteData()
 const isShow = ref(false)
 
-// Use homepage data from store (already fetched in vuex plugin)
-const pageData = computed(() => store.state.homepageData)
+const pageData = computed(() => homepageData.value)
 
-// SEO meta tags
 watchEffect(() => {
   useSeo({
     title: pageData.value?.title || 'Home',
@@ -29,18 +23,13 @@ watchEffect(() => {
   })
 })
 
-// Lifecycle - delay to ensure transition works
 onMounted(() => {
-  setTimeout(() => {
-    isShow.value = true
-  }, 100)
+  setTimeout(() => { isShow.value = true }, 100)
 })
 
-// Define layout
-definePageMeta({
-  layout: 'home',
-})
+definePageMeta({ layout: 'home' })
 </script>
+
 <style>
 .slide-fade-enter-active {
   transition: all 0.9s ease;

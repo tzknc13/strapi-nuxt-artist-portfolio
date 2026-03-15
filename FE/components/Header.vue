@@ -68,14 +68,12 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-
-const store = useStore()
 const config = useRuntimeConfig()
 const menuOpen = ref(false)
 const { isDark, toggle } = useColorMode()
+const { artistName } = useSiteData()
 
-const title = computed(() => store.state.artistName || ' - - ')
+const title = computed(() => artistName.value || ' - - ')
 
 const { data: pagesData } = await useFetch(
   `${config.public.apiUrl}/pages?fields[0]=title&fields[1]=slug&status=published&pagination[pageSize]=100`,

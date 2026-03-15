@@ -44,12 +44,8 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-
-// SSR data fetching with useFetch
 const route = useRoute()
 const config = useRuntimeConfig()
-const store = useStore()
 const slug = route.params.work
 
 const { data: workdata } = await useFetch(`${config.public.apiUrl}/works?filters[slug][$eq]=${slug}&populate=*`, {
@@ -71,8 +67,6 @@ const videoUrl = computed(() => {
   if (url.startsWith('http')) return url
   return `${config.public.baseUrl}${url}`
 })
-const arrowRight = computed(() => workdata.value && imagePos.value < images.value.length - 1)
-const arrowLeft = computed(() => workdata.value && imagePos.value > 0)
 
 // SEO meta tags
 useSeo({
