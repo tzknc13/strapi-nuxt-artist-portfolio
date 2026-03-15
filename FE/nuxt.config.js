@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
-  devtools: { enabled: true },
 
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -35,18 +34,24 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      'Bebas Neue': {
-        wght: [400],
-      },
+      // 'Inter': {
+      //   wght: [100, 400],
+      // },
       'Roboto Mono': {
         wght: [100, 300, 700],
       },
-      'Saira': {
-        wght: [300],
+      'Roboto': {
+        wght: [100, 300, 700],
       },
+      // 'Saira': {
+      //   wght: [300],
+      // },
     },
-    prefetch: true,
+    subsets: ['latin', 'latin-ext'],
+    prefetch: false,
   },
+  devtools: { enabled: false },
+
 
   compatibilityDate: '2024-12-05',
 })

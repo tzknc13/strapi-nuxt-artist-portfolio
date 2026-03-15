@@ -8,7 +8,7 @@
             @click="selectCat(category)"
           >
             <img :src="getCategoryImage(category)" />
-            <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400">{{ category.category_name }}</h4>
+            <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400 mt-2">{{ category.series_name }}</h4>
           </button>
         </div>
       </div>
@@ -18,11 +18,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
           </svg>
         </button>
-        <div v-if="categoryDescription" class="grid grid-cols-6 gap-4 justify-center my-6 relative">
+        <div v-if="showSeriesDescription" class="grid grid-cols-6 gap-4 justify-center my-6 relative series-description">
           <div :class="{ 'max-h-64 overflow-hidden relative': isLimitedHeight }" class="text-gray-500 dark:text-gray-400 col-span-6 md:col-start-2 md:col-end-6 pb-2" v-html="categoryDescription" />
           <div class="absolute bottom-0 left-0 w-full h-3/4 flex flex-col justify-end" :class="{ 'bg-gradient-to-t from-white dark:from-gray-900 to-transparent': isLimitedHeight }"></div>
         </div>
-        <div class="mt-2 mb-16 text-right">
+        <div v-if="showSeriesDescription" class="mt-2 mb-16 text-right">
           <button v-if="isLimitedHeight" class="text-xs text-gray-400 dark:text-gray-500" @click="isLimitedHeight = false">Show full text</button>
           <button v-else class="text-xs text-gray-400 dark:text-gray-500" @click="isLimitedHeight = true">Show less</button>
         </div>
@@ -36,7 +36,7 @@
             <nuxt-link :to="workLink(work)" class="h-full w-full">
               <img :src="urlfix(work.single_image)" />
               <div>
-                <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400">
+                <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400 mt-2">
                   {{ work.title }}, <span>{{ work.year }}</span>
                 </h4>
               </div>
@@ -57,7 +57,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  categories: {
+  series: {
     type: Array,
     required: true,
   },
@@ -67,14 +67,11 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 
-// Reactive state
-const selectedCategory = ref(null)
-const isCategories = ref(false)
-const isShow = ref(false)
+// Reactive state - initialize based on route query to avoid hydration mismatch
+const selectedCategory = ref(route.query.cat || null)
+const isCategories = ref(!route.query.cat)
+const isShow = ref(true)
 const isLimitedHeight = ref(true)
-
-// Helper functions
-const unwrapAttributes = (item) => item?.attributes || item
 
 const sortByPosition = (items) => {
   return items.slice().sort((a, b) => {
@@ -88,32 +85,33 @@ const getCategoryImageOrFallback = (cat) => {
   if (cat.single_image) {
     return cat.single_image
   }
-  if (cat.works?.data?.length > 0) {
-    return cat.works.data[0].single_image || ''
+  if (cat.works?.length > 0) {
+    return cat.works[0].single_image || ''
   }
   return ''
 }
 
 // Computed properties
-const sortedCategories = computed(() => {
-  const unwrapped = props.categories.map(unwrapAttributes)
-  return sortByPosition(unwrapped)
-})
+const sortedCategories = computed(() => sortByPosition(props.series.slice()))
 
 const filteredWorks = computed(() => {
   if (!selectedCategory.value) return props.works
 
   const filtered = props.works.filter((work) => {
-    return work.attributes.categories.data.some((cat) => cat.attributes.slug === selectedCategory.value)
+    return work.series?.some((cat) => cat.slug === selectedCategory.value)
   })
 
-  const unwrapped = filtered.map(unwrapAttributes)
-  return sortByPosition(unwrapped)
+  return sortByPosition(filtered)
 })
 
 const categoryDescription = computed(() => {
-  const cat = props.categories.find((c) => c.attributes.slug === selectedCategory.value)
-  return cat?.attributes.description || null
+  const cat = props.series.find((c) => c.slug === selectedCategory.value)
+  return cat?.description || null
+})
+
+const showSeriesDescription = computed(() => {
+  const cat = props.series.find((c) => c.slug === selectedCategory.value)
+  return cat?.show_description_field && categoryDescription.value
 })
 
 // Methods
@@ -123,14 +121,12 @@ const changeView = () => {
   router.push({ path: route.path, query: {} })
 }
 
-const getCategoryImage = (rawCat) => {
-  const cat = unwrapAttributes(rawCat)
+const getCategoryImage = (cat) => {
   const imageData = getCategoryImageOrFallback(cat)
   return imageData ? formatsCheck(null, imageData, 'medium') : ''
 }
 
-const getCategoryAlignment = (rawCat) => {
-  const cat = unwrapAttributes(rawCat)
+const getCategoryAlignment = (cat) => {
   return getCategoryImageOrFallback(cat)
 }
 
@@ -140,10 +136,9 @@ const selectCat = (cat) => {
   router.push({ path: route.path, query: { cat: cat.slug } })
 }
 
-const isHorizontal = (rawImg) => {
-  if (!rawImg) return false
-  const img = rawImg.data?.attributes || rawImg
-  return img ? img.height < img.width : false
+const isHorizontal = (img) => {
+  if (!img) return false
+  return img.height < img.width
 }
 
 const workLink = (work) => {
@@ -153,18 +148,6 @@ const workLink = (work) => {
 const urlfix = (imageObject) => {
   return formatsCheck(null, imageObject, 'medium')
 }
-
-// Lifecycle
-onMounted(() => {
-  // read category from router
-  if (route.query.cat) {
-    selectedCategory.value = route.query.cat
-    isCategories.value = false
-  } else {
-    isCategories.value = true
-  }
-  isShow.value = true
-})
 </script>
 
 <style>

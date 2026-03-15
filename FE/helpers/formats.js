@@ -12,8 +12,8 @@ export default function (baseUrl, imageObject, type = false) {
   }
 
 
-  // hello strapi, how are you today?
-  const imageData = imageObject.data?.attributes ? imageObject.data.attributes : imageObject.attributes ? imageObject.attributes : null
+  // Strapi v5: media is flat (no .data.attributes wrapper)
+  const imageData = imageObject.url ? imageObject : imageObject.data?.attributes ?? imageObject.attributes ?? null
 
   const imageUrl = findFormat(imageData, type)
   return `${baseUrl}${imageUrl}`

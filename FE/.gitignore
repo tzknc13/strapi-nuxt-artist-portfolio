@@ -92,3 +92,6 @@ sw.*
 
 # font
 /Heebo
+
+# Output directories
+.output

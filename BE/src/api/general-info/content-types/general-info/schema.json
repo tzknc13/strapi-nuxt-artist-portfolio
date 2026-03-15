@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "general_infos",
+  "info": {
+    "singularName": "general-info",
+    "pluralName": "general-infos",
+    "displayName": "general_info"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "artist_name": {
+      "type": "string"
+    },
+    "default_meta_description": {
+      "type": "string"
+    },
+    "favicon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "website_meta_default_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

@@ -10,53 +10,26 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-
-// SSR data fetching with useFetch
-const config = useRuntimeConfig()
-const store = useStore()
-
-const { data: pageDataResponse } = await useFetch(`${config.public.apiUrl}/first-page?populate=*`, {
-  transform: (res) => res.data.attributes,
-  server: false,
-})
-
-// Reactive state
+const { homepageData } = useSiteData()
 const isShow = ref(false)
-const pageData = computed(() => pageDataResponse.value)
 
-// Set homepage data in store
-watch(
-  pageData,
-  (newValue) => {
-    if (newValue) {
-      store.commit('setHomepageData', newValue)
-    }
-  },
-  { immediate: true },
-)
+const pageData = computed(() => homepageData.value)
 
-// SEO meta tags
 watchEffect(() => {
   useSeo({
     title: pageData.value?.title || 'Home',
     description: pageData.value?.seo_description || 'Welcome to the artist portfolio',
-    image: pageData.value?.single_image?.data?.attributes?.url,
+    image: pageData.value?.single_image?.url,
   })
 })
 
-// Lifecycle - delay to ensure transition works
 onMounted(() => {
-  setTimeout(() => {
-    isShow.value = true
-  }, 100)
+  setTimeout(() => { isShow.value = true }, 100)
 })
 
-// Define layout
-definePageMeta({
-  layout: 'home',
-})
+definePageMeta({ layout: 'home' })
 </script>
+
 <style>
 .slide-fade-enter-active {
   transition: all 0.9s ease;

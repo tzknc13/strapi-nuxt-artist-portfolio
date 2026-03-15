@@ -1,20 +1,18 @@
 {
   "kind": "collectionType",
-  "collectionName": "categories",
+  "collectionName": "series_list",
   "info": {
-    "singularName": "category",
-    "pluralName": "categories",
-    "displayName": "Category",
-    "name": "category"
+    "singularName": "series",
+    "pluralName": "series-list",
+    "displayName": "Series",
+    "name": "series"
   },
   "options": {
-    "increments": true,
-    "timestamps": true,
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "category_name": {
+    "series_name": {
       "type": "string",
       "required": true
     },
@@ -22,21 +20,21 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::work.work",
-      "inversedBy": "categories"
+      "inversedBy": "series"
     },
     "single_image": {
       "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "multiple": false,
-      "required": false
+      ]
     },
     "slug": {
       "type": "uid",
-      "targetField": "category_name",
+      "targetField": "series_name",
       "required": true
     },
     "description": {
@@ -49,9 +47,13 @@
     },
     "position_in_view": {
       "type": "integer",
+      "required": false,
       "default": 0,
-      "unique": false,
-      "required": false
+      "unique": false
+    },
+    "show_description_field": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

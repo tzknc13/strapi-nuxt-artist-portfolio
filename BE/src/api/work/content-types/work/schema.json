@@ -8,8 +8,6 @@
     "name": "work"
   },
   "options": {
-    "increments": true,
-    "timestamps": true,
     "draftAndPublish": true
   },
   "pluginOptions": {},
@@ -20,34 +18,34 @@
     },
     "single_image": {
       "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "files",
         "images",
         "videos"
-      ],
-      "multiple": false,
-      "required": true
+      ]
     },
-    "categories": {
+    "series": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::category.category",
+      "target": "api::series.series",
       "mappedBy": "works"
     },
     "images": {
       "type": "media",
+      "multiple": true,
+      "required": true,
       "allowedTypes": [
         "files",
         "images",
         "videos"
-      ],
-      "multiple": true,
-      "required": true
+      ]
     },
     "slug": {
       "type": "uid",
-      "required": true,
-      "targetField": "title"
+      "targetField": "title",
+      "required": true
     },
     "date": {
       "type": "date",
@@ -76,6 +74,16 @@
     },
     "position_in_view": {
       "type": "integer"
+    },
+    "video_file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }
