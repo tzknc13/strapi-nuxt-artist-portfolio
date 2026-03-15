@@ -6,16 +6,16 @@ Who is this for?
 - anyone who would like to set up a quick artists portfolio, with extended ability to turn to multifunctional web.
 
 What is inside?
-- a premodelled system of categories and artworks that fits the needs of an artist who is making artworks in series or categories, but still needs a single URL for every each piece and possibility to add good looking notes and comments to the works.
-- a pre-built systemt o create any page from a few basic component blocks
-- a pre-built CV pages, because that is soimething that every artist needs.
-- pre-built connection with Strapi CMS that allows self-management of the website.
-- open graph definitions for meta data.
+- a pre-built system of categories and artworks that fits the needs of an artist who is making artworks in series or categories, but still needs a single URL for every each piece and possibility to add good looking notes and comments to the works.
+- a pre-built system to create any custom page from a few basic component blocks.
+- a pre-built CV pages, because that is soimething that usually every artist wants.
+- a pre-built connection with Strapi CMS that allows self-management of the website.
+- SEO best practices & open graph definitions for meta data.
 
 
 # prerequisites
 
-node v20 [lts]
+node 20
 
 # install
 
@@ -35,7 +35,5 @@ is set up so far only for the Frontend, as the strapi might change its definitio
 
 
 TODO
-- favicon
-- video playback
 - column layouts with nested components
-- update fonts
+- static builds
