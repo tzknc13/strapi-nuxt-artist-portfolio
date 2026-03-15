@@ -4,29 +4,43 @@ import formatsCheck from '../helpers/formats.js'
 export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig()
   
-  // Fetch initial site data
-  let siteData = null
+  // Fetch initial site data from general-info
+  let generalInfo = null
+  let homepageData = null
   try {
-    const response = await $fetch(`${config.public.apiUrl}/first-page?populate=*`)
-    siteData = response?.data
+    const [generalResponse, homepageResponse] = await Promise.all([
+      $fetch(`${config.public.apiUrl}/general-info?populate=*`),
+      $fetch(`${config.public.apiUrl}/first-page?populate=*`)
+    ])
+    generalInfo = generalResponse?.data
+    homepageData = homepageResponse?.data
   } catch (error) {
     console.warn('Failed to fetch site data:', error)
   }
 
   const store = createStore({
     state: () => ({
-      artistName: siteData?.artist_name || "Artist Name",
+      artistName: generalInfo?.artist_name || "Artist Name",
+      defaultMetaDescription: generalInfo?.default_meta_description || "Artist portfolio showcasing works and exhibitions",
+      defaultMetaImage: generalInfo?.website_meta_default_image || null,
+      favicon: generalInfo?.favicon || null,
       fullscreenImgUrl: "",
       isWorksLoaded: false,
       isCatsLoaded: false,
       works: [],
-      categories: [],
-      homepageData: siteData || {}
+      series: [],
+      homepageData: homepageData || {}
     }),
     
     getters: {
       artistName(state) {
         return state.artistName
+      },
+      defaultMetaDescription(state) {
+        return state.defaultMetaDescription
+      },
+      defaultMetaImage(state) {
+        return state.defaultMetaImage
       },
       isWorkData(state) {
         return state.isWorksLoaded
@@ -37,8 +51,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       works(state) {
         return state.works
       },
-      categories(state) {
-        return state.categories
+      series(state) {
+        return state.series
       },
       homepageBackground(state) {
         // formatsCheck now gets baseUrl from useRuntimeConfig internally
@@ -53,8 +67,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       updateWorksState(state, bool) {
         state.isWorksLoaded = bool
       },
-      loadCats(state, categories) {
-        state.categories = categories
+      loadCats(state, series) {
+        state.series = series
       },
       updateCatsState(state, bool) {
         state.isCatsLoaded = bool
@@ -64,6 +78,19 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       }
     }
   })
+
+  // Set dynamic favicon from general-info
+  if (generalInfo?.favicon?.url) {
+    const faviconUrl = generalInfo.favicon.url.startsWith('http') 
+      ? generalInfo.favicon.url 
+      : `${config.public.baseUrl}${generalInfo.favicon.url}`
+    
+    useHead({
+      link: [
+        { rel: 'icon', type: generalInfo.favicon.mime || 'image/x-icon', href: faviconUrl }
+      ]
+    })
+  }
 
   nuxtApp.vueApp.use(store)
   nuxtApp.provide('store', store)

@@ -65,7 +65,7 @@ useSeo({
 // Methods
 const closeView = () => {
   const router = useRouter()
-  router.push({ path: '/works', query: { cat: work.value.categories?.[0]?.slug } })
+  router.push({ path: '/works', query: { cat: work.value.series?.[0]?.slug } })
 }
 
 const moveForward = () => {

@@ -13,11 +13,11 @@ export const useSeo = (options = {}) => {
   const route = useRoute()
   const { $store } = useNuxtApp()
   
-  // Defaults
+  // Defaults from general-info API via store
   const defaults = {
     siteName: $store?.state?.artistName || 'Artist Portfolio',
-    defaultDescription: 'Artist portfolio showcasing works and exhibitions',
-    defaultImage: '/og-image.jpg',
+    defaultDescription: $store?.state?.defaultMetaDescription || 'Artist portfolio showcasing works and exhibitions',
+    defaultImage: $store?.state?.defaultMetaImage?.url || '/og-image.jpg',
     twitterCard: 'summary_large_image',
     locale: 'en_US',
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <WorksGrid :works="works" :categories="categories" />
+    <WorksGrid v-if="isDataReady" :works="works" :series="series" />
   </div>
 </template>
 
@@ -19,13 +19,14 @@ const store = useStore()
 // Computed properties from store
 const isWorkData = computed(() => store.getters.isWorkData)
 const works = computed(() => store.getters.works)
-const categories = computed(() => store.getters.categories)
+const series = computed(() => store.getters.series)
 const isCatsLoaded = computed(() => store.getters.isCatsLoaded)
+const isDataReady = computed(() => isWorkData.value && isCatsLoaded.value)
 
 const getCurrentCategory = computed(() => {
   if (isCatsLoaded.value) {
     const catSlug = route.query.cat || null
-    const cat = catSlug ? categories.value.find((c) => c.slug === catSlug) : null
+    const cat = catSlug ? series.value.find((c) => c.slug === catSlug) : null
     return cat || null
   }
   return null
@@ -34,44 +35,50 @@ const getCurrentCategory = computed(() => {
 const metaDescription = computed(() => {
   const artistName = store.state.artistName
   return getCurrentCategory.value 
-    ? `${getCurrentCategory.value.category_name} by ${artistName}` 
+    ? `${getCurrentCategory.value.series_name} by ${artistName}` 
     : `All works by ${artistName}`
 })
 
 // SEO meta tags
 useSeo({
-  title: getCurrentCategory.value?.category_name || 'Works',
+  title: getCurrentCategory.value?.series_name || 'Works',
   description: metaDescription.value,
 })
 
-// Fetch data on mount
+// Fetch data on client side only
 onMounted(async () => {
-  if (!isWorkData.value) {
-    // Build the query with optional category filter
+  const fetchPromises = []
+  
+  if (!store.getters.isWorkData) {
     let query = `${config.public.apiUrl}/works?pagination[pageSize]=200&populate=*`
-
-    // If category is specified in route query, add filter
     if (route.query.cat) {
-      query += `&filters[categories][slug][$eq]=${route.query.cat}`
+      query += `&filters[series][slug][$eq]=${route.query.cat}`
     }
-
-    const res = await $fetch(query)
-    store.commit('loadWorks', res.data)
-    store.commit('updateWorksState', true)
+    fetchPromises.push(
+      $fetch(query).then(res => {
+        store.commit('loadWorks', res.data)
+        store.commit('updateWorksState', true)
+      })
+    )
   }
   
-  if (!isCatsLoaded.value) {
-    const catsRes = await $fetch(`${config.public.apiUrl}/categories?pagination[pageSize]=200&populate=*`)
-    store.commit('loadCats', catsRes.data)
-    store.commit('updateCatsState', true)
+  if (!store.getters.isCatsLoaded) {
+    fetchPromises.push(
+      $fetch(`${config.public.apiUrl}/series-list?pagination[pageSize]=200&populate[single_image]=true&populate[works][populate][single_image]=true`).then(res => {
+        store.commit('loadCats', res.data)
+        store.commit('updateCatsState', true)
+      })
+    )
   }
+  
+  await Promise.all(fetchPromises)
 })
 
 // Watch for category changes
 watch(() => route.query.cat, async (newCat, oldCat) => {
   if (newCat) {
     let query = `${config.public.apiUrl}/works?populate=*`
-    query += `&filters[categories][slug][$eq]=${newCat}`
+    query += `&filters[series][slug][$eq]=${newCat}`
     const res = await $fetch(query)
     store.commit('loadWorks', res.data)
   } else {

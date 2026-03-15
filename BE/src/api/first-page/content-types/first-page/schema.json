@@ -4,7 +4,7 @@
   "info": {
     "singularName": "first-page",
     "pluralName": "first-pages",
-    "displayName": "First-page",
+    "displayName": "first_page",
     "name": "first-page",
     "description": ""
   },
@@ -34,11 +34,6 @@
     },
     "seo_description": {
       "type": "text"
-    },
-    "artist_name": {
-      "type": "string",
-      "required": true,
-      "default": "Artist Name"
     }
   }
 }

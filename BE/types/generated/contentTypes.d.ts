@@ -430,42 +430,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
-  collectionName: 'categories';
-  info: {
-    displayName: 'Category';
-    name: 'category';
-    pluralName: 'categories';
-    singularName: 'category';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    category_name: Schema.Attribute.String & Schema.Attribute.Required;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.RichText &
-      Schema.Attribute.DefaultTo<'// toto je volitelne'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::category.category'
-    > &
-      Schema.Attribute.Private;
-    position_in_view: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
-    publishedAt: Schema.Attribute.DateTime;
-    single_image: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
-    slug: Schema.Attribute.UID<'category_name'> & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    works: Schema.Attribute.Relation<'manyToMany', 'api::work.work'>;
-    year: Schema.Attribute.BigInteger & Schema.Attribute.Required;
-  };
-}
-
 export interface ApiContactContact extends Struct.SingleTypeSchema {
   collectionName: 'contacts';
   info: {
@@ -536,7 +500,7 @@ export interface ApiFirstPageFirstPage extends Struct.SingleTypeSchema {
   collectionName: 'first_pages';
   info: {
     description: '';
-    displayName: 'First-page';
+    displayName: 'first_page';
     name: 'first-page';
     pluralName: 'first-pages';
     singularName: 'first-page';
@@ -545,9 +509,6 @@ export interface ApiFirstPageFirstPage extends Struct.SingleTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    artist_name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Artist Name'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -566,6 +527,39 @@ export interface ApiFirstPageFirstPage extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiGeneralInfoGeneralInfo extends Struct.SingleTypeSchema {
+  collectionName: 'general_infos';
+  info: {
+    displayName: 'general_info';
+    pluralName: 'general-infos';
+    singularName: 'general-info';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    artist_name: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    default_meta_description: Schema.Attribute.String;
+    favicon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::general-info.general-info'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    website_meta_default_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
   };
 }
 
@@ -605,6 +599,44 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSeriesSeries extends Struct.CollectionTypeSchema {
+  collectionName: 'series_list';
+  info: {
+    displayName: 'Series';
+    name: 'series';
+    pluralName: 'series-list';
+    singularName: 'series';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText &
+      Schema.Attribute.DefaultTo<'// toto je volitelne'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::series.series'
+    > &
+      Schema.Attribute.Private;
+    position_in_view: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    series_name: Schema.Attribute.String & Schema.Attribute.Required;
+    show_description_field: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    single_image: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
+    slug: Schema.Attribute.UID<'series_name'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    works: Schema.Attribute.Relation<'manyToMany', 'api::work.work'>;
+    year: Schema.Attribute.BigInteger & Schema.Attribute.Required;
+  };
+}
+
 export interface ApiWorkWork extends Struct.CollectionTypeSchema {
   collectionName: 'works';
   info: {
@@ -618,10 +650,6 @@ export interface ApiWorkWork extends Struct.CollectionTypeSchema {
   };
   attributes: {
     author: Schema.Attribute.String;
-    categories: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::category.category'
-    >;
     coauthor: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -638,6 +666,7 @@ export interface ApiWorkWork extends Struct.CollectionTypeSchema {
     medium: Schema.Attribute.String;
     position_in_view: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
+    series: Schema.Attribute.Relation<'manyToMany', 'api::series.series'>;
     single_image: Schema.Attribute.Media<'files' | 'images' | 'videos'> &
       Schema.Attribute.Required;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
@@ -1160,11 +1189,12 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::category.category': ApiCategoryCategory;
       'api::contact.contact': ApiContactContact;
       'api::cv.cv': ApiCvCv;
       'api::first-page.first-page': ApiFirstPageFirstPage;
+      'api::general-info.general-info': ApiGeneralInfoGeneralInfo;
       'api::page.page': ApiPagePage;
+      'api::series.series': ApiSeriesSeries;
       'api::work.work': ApiWorkWork;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

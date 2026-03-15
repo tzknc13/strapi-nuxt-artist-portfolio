@@ -8,7 +8,7 @@
             @click="selectCat(category)"
           >
             <img :src="getCategoryImage(category)" />
-            <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400">{{ category.category_name }}</h4>
+            <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400">{{ category.series_name }}</h4>
           </button>
         </div>
       </div>
@@ -18,11 +18,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
           </svg>
         </button>
-        <div v-if="categoryDescription" class="grid grid-cols-6 gap-4 justify-center my-6 relative">
+        <div v-if="showSeriesDescription" class="grid grid-cols-6 gap-4 justify-center my-6 relative series-description">
           <div :class="{ 'max-h-64 overflow-hidden relative': isLimitedHeight }" class="text-gray-500 dark:text-gray-400 col-span-6 md:col-start-2 md:col-end-6 pb-2" v-html="categoryDescription" />
           <div class="absolute bottom-0 left-0 w-full h-3/4 flex flex-col justify-end" :class="{ 'bg-gradient-to-t from-white dark:from-gray-900 to-transparent': isLimitedHeight }"></div>
         </div>
-        <div class="mt-2 mb-16 text-right">
+        <div v-if="showSeriesDescription" class="mt-2 mb-16 text-right">
           <button v-if="isLimitedHeight" class="text-xs text-gray-400 dark:text-gray-500" @click="isLimitedHeight = false">Show full text</button>
           <button v-else class="text-xs text-gray-400 dark:text-gray-500" @click="isLimitedHeight = true">Show less</button>
         </div>
@@ -57,7 +57,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  categories: {
+  series: {
     type: Array,
     required: true,
   },
@@ -67,10 +67,10 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 
-// Reactive state
-const selectedCategory = ref(null)
-const isCategories = ref(false)
-const isShow = ref(false)
+// Reactive state - initialize based on route query to avoid hydration mismatch
+const selectedCategory = ref(route.query.cat || null)
+const isCategories = ref(!route.query.cat)
+const isShow = ref(true)
 const isLimitedHeight = ref(true)
 
 const sortByPosition = (items) => {
@@ -92,21 +92,26 @@ const getCategoryImageOrFallback = (cat) => {
 }
 
 // Computed properties
-const sortedCategories = computed(() => sortByPosition(props.categories.slice()))
+const sortedCategories = computed(() => sortByPosition(props.series.slice()))
 
 const filteredWorks = computed(() => {
   if (!selectedCategory.value) return props.works
 
   const filtered = props.works.filter((work) => {
-    return work.categories?.some((cat) => cat.slug === selectedCategory.value)
+    return work.series?.some((cat) => cat.slug === selectedCategory.value)
   })
 
   return sortByPosition(filtered)
 })
 
 const categoryDescription = computed(() => {
-  const cat = props.categories.find((c) => c.slug === selectedCategory.value)
+  const cat = props.series.find((c) => c.slug === selectedCategory.value)
   return cat?.description || null
+})
+
+const showSeriesDescription = computed(() => {
+  const cat = props.series.find((c) => c.slug === selectedCategory.value)
+  return cat?.show_description_field && categoryDescription.value
 })
 
 // Methods
@@ -143,18 +148,6 @@ const workLink = (work) => {
 const urlfix = (imageObject) => {
   return formatsCheck(null, imageObject, 'medium')
 }
-
-// Lifecycle
-onMounted(() => {
-  // read category from router
-  if (route.query.cat) {
-    selectedCategory.value = route.query.cat
-    isCategories.value = false
-  } else {
-    isCategories.value = true
-  }
-  isShow.value = true
-})
 </script>
 
 <style>

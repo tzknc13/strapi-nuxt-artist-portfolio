@@ -57,32 +57,6 @@ export interface ContentParagraph extends Struct.ComponentSchema {
   };
 }
 
-export interface TextlistsPress extends Struct.ComponentSchema {
-  collectionName: 'components_textlists_presses';
-  info: {
-    description: '';
-    displayName: 'text_with_header';
-    icon: 'align-left';
-  };
-  attributes: {
-    header: Schema.Attribute.String;
-    richtext: Schema.Attribute.RichText;
-  };
-}
-
-export interface TextlistsTextList extends Struct.ComponentSchema {
-  collectionName: 'components_textlists_text_lists';
-  info: {
-    description: '';
-    displayName: 'text_list';
-    icon: 'align-center';
-  };
-  attributes: {
-    header: Schema.Attribute.String;
-    text: Schema.Attribute.Component<'textlists.press', true>;
-  };
-}
-
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -90,8 +64,6 @@ declare module '@strapi/strapi' {
       'content.hero': ContentHero;
       'content.image-block': ContentImageBlock;
       'content.paragraph': ContentParagraph;
-      'textlists.press': TextlistsPress;
-      'textlists.text-list': TextlistsTextList;
     }
   }
 }
