@@ -430,40 +430,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiContactContact extends Struct.SingleTypeSchema {
-  collectionName: 'contacts';
-  info: {
-    displayName: 'Contact';
-    name: 'contact';
-    pluralName: 'contacts';
-    singularName: 'contact';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    content1: Schema.Attribute.RichText;
-    content2: Schema.Attribute.RichText;
-    content3: Schema.Attribute.RichText;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    img1: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
-    img2: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::contact.contact'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiCvCv extends Struct.SingleTypeSchema {
   collectionName: 'cvs';
   info: {
@@ -476,20 +442,19 @@ export interface ApiCvCv extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    block_1: Schema.Attribute.RichText;
+    block_2: Schema.Attribute.RichText;
+    block_3: Schema.Attribute.RichText;
+    contact: Schema.Attribute.RichText;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::cv.cv'> &
       Schema.Attribute.Private;
-    media: Schema.Attribute.Media<'images' | 'files' | 'videos', true>;
     portrait_photo: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
     publishedAt: Schema.Attribute.DateTime;
     short_text: Schema.Attribute.String;
-    text_1: Schema.Attribute.RichText;
-    text_2: Schema.Attribute.RichText;
-    text_3: Schema.Attribute.RichText;
-    text_4: Schema.Attribute.RichText;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -674,6 +639,9 @@ export interface ApiWorkWork extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    video_file: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     year: Schema.Attribute.Integer;
   };
 }
@@ -1189,7 +1157,6 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::contact.contact': ApiContactContact;
       'api::cv.cv': ApiCvCv;
       'api::first-page.first-page': ApiFirstPageFirstPage;
       'api::general-info.general-info': ApiGeneralInfoGeneralInfo;

@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
-  devtools: { enabled: true },
 
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -48,8 +47,11 @@ export default defineNuxtConfig({
       //   wght: [300],
       // },
     },
-    prefetch: true,
+    subsets: ['latin', 'latin-ext'],
+    prefetch: false,
   },
+  devtools: { enabled: false },
+
 
   compatibilityDate: '2024-12-05',
 })

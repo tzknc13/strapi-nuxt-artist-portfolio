@@ -8,7 +8,7 @@
             @click="selectCat(category)"
           >
             <img :src="getCategoryImage(category)" />
-            <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400">{{ category.series_name }}</h4>
+            <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400 mt-2">{{ category.series_name }}</h4>
           </button>
         </div>
       </div>
@@ -36,7 +36,7 @@
             <nuxt-link :to="workLink(work)" class="h-full w-full">
               <img :src="urlfix(work.single_image)" />
               <div>
-                <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400">
+                <h4 class="sm:inline text-xs text-gray-500 dark:text-gray-400 mt-2">
                   {{ work.title }}, <span>{{ work.year }}</span>
                 </h4>
               </div>

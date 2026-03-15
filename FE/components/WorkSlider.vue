@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-6 gap-4">
+  <div class="grid grid-cols-6 gap-4 mt-8 md:mt-0">
     <transition name="work-image" mode="out-in">
       <div class="relative col-span-6 flex justify-center flex items-center" :key="currentImage.url">
         <div class="w-8 m-4 hidden md:block">
@@ -78,9 +78,10 @@ const imageUrl = (imageObject) => {
 }
 
 .img-limit {
-  max-width: 1000px;
-  max-height: 1000px;
+  max-width: 100%;
+  max-height: 75vh;
   height: auto;
   width: auto;
+  margin: 0 2rem;
 }
 </style>

@@ -4,19 +4,26 @@ import formatsCheck from '../helpers/formats.js'
 export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig()
   
-  // Fetch initial site data from general-info
-  let generalInfo = null
-  let homepageData = null
-  try {
-    const [generalResponse, homepageResponse] = await Promise.all([
-      $fetch(`${config.public.apiUrl}/general-info?populate=*`),
-      $fetch(`${config.public.apiUrl}/first-page?populate=*`)
-    ])
-    generalInfo = generalResponse?.data
-    homepageData = homepageResponse?.data
-  } catch (error) {
-    console.warn('Failed to fetch site data:', error)
+  // useState transfers values from server to client via the SSR payload,
+  // so the client reuses server-fetched data without a second request.
+  const generalInfoState = useState('general-info', () => null)
+  const homepageDataState = useState('first-page', () => null)
+
+  if (!generalInfoState.value || !homepageDataState.value) {
+    try {
+      const [generalResponse, homepageResponse] = await Promise.all([
+        $fetch(`${config.public.apiUrl}/general-info?populate=*`),
+        $fetch(`${config.public.apiUrl}/first-page?populate=*`),
+      ])
+      generalInfoState.value = generalResponse?.data ?? null
+      homepageDataState.value = homepageResponse?.data ?? null
+    } catch (error) {
+      console.warn('Failed to fetch site data:', error)
+    }
   }
+
+  const generalInfo = generalInfoState.value
+  const homepageData = homepageDataState.value
 
   const store = createStore({
     state: () => ({
@@ -80,14 +87,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   })
 
   // Set dynamic favicon from general-info
-  if (generalInfo?.favicon?.url) {
-    const faviconUrl = generalInfo.favicon.url.startsWith('http') 
-      ? generalInfo.favicon.url 
-      : `${config.public.baseUrl}${generalInfo.favicon.url}`
-    
+  const faviconSource = generalInfo?.favicon || generalInfo?.website_meta_default_image
+  if (faviconSource?.url) {
+    const faviconUrl = faviconSource.url.startsWith('http')
+      ? faviconSource.url
+      : `${config.public.baseUrl}${faviconSource.url}`
+
     useHead({
       link: [
-        { rel: 'icon', type: generalInfo.favicon.mime || 'image/x-icon', href: faviconUrl }
+        { rel: 'icon', type: faviconSource.mime || 'image/x-icon', href: faviconUrl }
       ]
     })
   }

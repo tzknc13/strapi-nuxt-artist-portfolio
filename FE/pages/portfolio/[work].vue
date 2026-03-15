@@ -15,7 +15,19 @@
             </button>
           </div>
         </div>
-        <work-slider :position="imagePos" :images="images" @moveForward="moveForward"  @moveBack="moveBack" />
+        <!-- Video player if video_file exists -->
+        <div v-if="videoFile" class="flex justify-center">
+          <video 
+            :key="videoUrl"
+            :src="videoUrl"
+            controls
+            playsinline
+            preload="auto"
+            class="max-w-full max-h-[70vh]"
+          />
+        </div>
+        <!-- Image slider if no video -->
+        <work-slider v-else :position="imagePos" :images="images" @moveForward="moveForward" @moveBack="moveBack" />
         <div class="grid grid-cols-6 gap-4">
           <div class="col-start-2 col-span-4 md:col-start-3 md:col-span-2 flex justify-center flex items-center mt-2">
             <h4 class="text-sm mx-4 text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:hover:text-gray-100"> {{ work.title }}, {{ work.year }}, {{ work.medium }}, {{ work.dimensions }}</h4>
@@ -51,6 +63,14 @@ const show = ref(false)
 // Computed properties
 const work = computed(() => workdata.value?.[0] ?? {})
 const images = computed(() => workdata.value?.[0]?.images ?? [])
+const videoFile = computed(() => workdata.value?.[0]?.video_file ?? null)
+const videoUrl = computed(() => {
+  if (!videoFile.value?.url) return ''
+  const url = videoFile.value.url
+  // If URL already starts with http, use as-is
+  if (url.startsWith('http')) return url
+  return `${config.public.baseUrl}${url}`
+})
 const arrowRight = computed(() => workdata.value && imagePos.value < images.value.length - 1)
 const arrowLeft = computed(() => workdata.value && imagePos.value > 0)
 

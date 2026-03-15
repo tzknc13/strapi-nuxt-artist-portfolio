@@ -15,36 +15,26 @@
     "short_text": {
       "type": "string"
     },
-    "text_1": {
+    "block_1": {
       "type": "richtext"
     },
-    "text_2": {
+    "block_2": {
       "type": "richtext"
     },
-    "text_3": {
+    "block_3": {
       "type": "richtext"
     },
     "portrait_photo": {
       "type": "media",
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos"
-      ],
       "multiple": false,
-      "required": false
-    },
-    "media": {
-      "type": "media",
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "multiple": true,
-      "required": false
+      ]
     },
-    "text_4": {
+    "contact": {
       "type": "richtext"
     }
   }
