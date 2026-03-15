@@ -40,16 +40,17 @@ body {
 h1,
 h2,
 .heading-font {
-
-  font-family: 'Bebas Neue', serif;
-  font-weight: 400;
+  /* font-family: 'Inter', sans-serif; */
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
 }
 
 .descriptions,
 h3,
 h4,
 h5 {
-  font-family: "Saira", serif;
+  /* font-family: "Saira", serif; */
   font-weight: 400;
   font-style: normal;
 }

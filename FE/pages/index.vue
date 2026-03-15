@@ -12,29 +12,13 @@
 <script setup>
 import { useStore } from 'vuex'
 
-// SSR data fetching with useFetch
-const config = useRuntimeConfig()
 const store = useStore()
-
-const { data: pageDataResponse } = await useFetch(`${config.public.apiUrl}/first-page?populate=*`, {
-  transform: (res) => res.data,
-  server: false,
-})
 
 // Reactive state
 const isShow = ref(false)
-const pageData = computed(() => pageDataResponse.value)
 
-// Set homepage data in store
-watch(
-  pageData,
-  (newValue) => {
-    if (newValue) {
-      store.commit('setHomepageData', newValue)
-    }
-  },
-  { immediate: true },
-)
+// Use homepage data from store (already fetched in vuex plugin)
+const pageData = computed(() => store.state.homepageData)
 
 // SEO meta tags
 watchEffect(() => {

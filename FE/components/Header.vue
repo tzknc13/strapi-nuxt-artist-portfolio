@@ -2,9 +2,18 @@
   <div class="mt-5 header">
     <div class="flex items-center justify-between md:justify-center mb-5 relative">
       <!-- Title: centered on md+, left on mobile -->
-      <h1 class="heading-font md:absolute md:left-1/2 md:-translate-x-1/2">
-        <nuxt-link to="/">{{ title }}</nuxt-link>
-      </h1>
+      <div class="flex items-baseline gap-4 md:absolute md:left-1/2 md:-translate-x-1/2">
+        <h1 class="heading-font">
+          <nuxt-link to="/">{{ title }}</nuxt-link>
+        </h1>
+        <nuxt-link 
+          v-if="hasWorks" 
+          to="/works" 
+          class="text-gray-400 dark:text-gray-500 font-light text-sm hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300"
+        >
+          works
+        </nuxt-link>
+      </div>
 
       <!-- Hamburger button -->
       <button

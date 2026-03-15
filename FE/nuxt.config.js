@@ -35,15 +35,18 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      'Bebas Neue': {
-        wght: [400],
-      },
+      // 'Inter': {
+      //   wght: [100, 400],
+      // },
       'Roboto Mono': {
         wght: [100, 300, 700],
       },
-      'Saira': {
-        wght: [300],
+      'Roboto': {
+        wght: [100, 300, 700],
       },
+      // 'Saira': {
+      //   wght: [300],
+      // },
     },
     prefetch: true,
   },
